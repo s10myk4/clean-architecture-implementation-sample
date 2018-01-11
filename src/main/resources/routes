@@ -1,0 +1,1 @@
+POST        /api/warriors/new/weapons        adapter.http.controller.WarriorController.equipNewWeapon
