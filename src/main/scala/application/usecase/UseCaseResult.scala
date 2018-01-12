@@ -5,7 +5,7 @@ sealed trait UseCaseResult
 /**
   * 正常系
   */
-case object Normality extends UseCaseResult
+object Normality extends UseCaseResult
 
 /**
   * 異常系

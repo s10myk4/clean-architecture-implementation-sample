@@ -1,6 +1,6 @@
 package adapter.http.controller.support
 
-import application.usecase.{EntityDuplicated, EntityNotFound, Normality, UseCaseResult}
+import application.usecase._
 import io.circe.syntax._
 import play.api.mvc.Result
 import play.api.mvc.Results._
@@ -16,7 +16,7 @@ private[http] trait HttpStatusConverter extends JsonEncoder with WritableJsonCon
         case Normality => Ok
         case x: EntityDuplicated => Conflict(x.asJson)
         case x: EntityNotFound => NotFound(x.asJson)
-        //case x: InvalidInputParameters => BadRequest(x.asJson(formErrorEncoder))
+        case x: InvalidInputParameters => BadRequest(x.asJson(formErrorEncoder))
         case _ => InternalServerError("A use-case-result did not match anything.")
       }
     }

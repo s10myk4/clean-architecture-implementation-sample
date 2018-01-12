@@ -10,7 +10,7 @@ import scalaz.ContT
 
 private[http] trait FormHelper {
 
-  def bindCont[A](form: Form[A])(implicit req: Request[AnyContent]): ActionCont[A] =
+  def bindCont[A](form: Form[A])(implicit req: Request[AnyContent]): ActionCont[UseCaseResult, A] =
     ContT(f =>
       form.bindFromRequest.fold[Future[UseCaseResult]](
         error => Future.successful(InvalidInputParameters("不正な内容です", convertFormErrorsToMap(error.errors))),

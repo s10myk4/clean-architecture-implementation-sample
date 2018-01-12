@@ -12,7 +12,7 @@ trait WritableJsonConverter {
     Writeable(obj => codec.encode(obj.pretty(printer)))
   }
 
-  implicit def contentTypeOfCirceJson(implicit codec: Codec): ContentTypeOf[Json] = {
+  implicit def contentTypeOfCirceJson: ContentTypeOf[Json] = {
     ContentTypeOf[Json](Some(ContentTypes.JSON))
   }
 }
