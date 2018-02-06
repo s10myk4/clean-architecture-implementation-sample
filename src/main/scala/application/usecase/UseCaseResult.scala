@@ -14,8 +14,17 @@ trait Abnormality extends UseCaseResult {
   val cause: String
 }
 
+/**
+  * エンティティが存在しない
+  */
 trait EntityNotFound extends Abnormality
 
+/**
+  *  エンティティが重複
+  */
 trait EntityDuplicated extends Abnormality
 
-final case class InvalidInputParameters(cause: String = "不正なフォームの入力です", errors: Map[String, String]) extends Abnormality
+/**
+  * 不正な入力値
+  */
+final case class InvalidInputParameters(cause: String = "不正な入力値です", errors: Map[String, String]) extends Abnormality

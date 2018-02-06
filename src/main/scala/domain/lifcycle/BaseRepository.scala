@@ -1,6 +1,7 @@
 package domain.lifcycle
 
 import domain.model.{BaseEntity, BaseEntityId}
+
 import scala.language.higherKinds
 
 trait BaseRepository[ID <: BaseEntityId, E <: BaseEntity[ID], F[_]] {

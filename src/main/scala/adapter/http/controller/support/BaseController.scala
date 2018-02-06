@@ -9,9 +9,6 @@ private[controller] abstract class BaseController(cc: ControllerComponents)
     with HttpStatusConverter
     with FormHelper {
 
-  //protected val ioContext: IOContext
-
   protected val ec: ExecutionContext = ExecutionContext.global
 
-  //protected val idGen: IdGenerator
 }

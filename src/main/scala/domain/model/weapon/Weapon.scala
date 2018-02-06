@@ -2,6 +2,9 @@ package domain.model.weapon
 
 import domain.model._
 
+/**
+  * 武器を表すドメインオブジェクト
+  */
 sealed trait Weapon {
   val name: String
   val offensivePower: Int
@@ -25,9 +28,9 @@ object Weapon {
     val levelConditionOfEquipment: Int = 40
   }
 
-  def fromString(str: String): Weapon = str match {
-    case "goldSword" => GoldSword
-    case "blackSword"    => BlackSword
-    case _              => throw new IllegalArgumentException(s"$str did not match.")
+  def apply(str: String): Option[Weapon] = str match {
+    case "goldSword" => Some(GoldSword)
+    case "blackSword"    => Some(BlackSword)
+    case _              => None
   }
 }

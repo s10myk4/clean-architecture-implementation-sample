@@ -6,7 +6,7 @@ import io.circe.{Encoder, Json}
 /**
   * HttpレスポンスをJsonに変換するエンコーダー
   */
-trait JsonEncoder {
+private[controller] trait JsonEncoder {
 
   implicit def failureResponseEncoder[T <: Abnormality]: Encoder[T] = {
     Encoder.instance { f =>
