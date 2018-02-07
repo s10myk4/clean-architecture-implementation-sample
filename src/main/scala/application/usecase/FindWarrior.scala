@@ -8,10 +8,10 @@ import domain.model.character.warrior.{Warrior, WarriorId}
 import scala.concurrent.Future
 
 /**
-  * 戦士を特定する
+  * 戦士を取得する
   */
-trait IdentifyWarrior {
-  def conduct(id: WarriorId): ActionCont[Warrior]
+trait FindWarrior {
+  def apply(id: WarriorId): ActionCont[Warrior]
 
   case object WarriorNotFound extends EntityNotFound {
     val cause: String = "A warrior do not found."
@@ -19,14 +19,14 @@ trait IdentifyWarrior {
 
 }
 
-final class IdentifyWarriorImpl[Ctx <: IOContext](
+final class FindWarriorImpl[Ctx <: IOContext](
   ctx: Ctx,
   repository: WarriorRepository[Future]
-) extends IdentifyWarrior {
-  def conduct(id: WarriorId): ActionCont[Warrior] = {
+) extends FindWarrior {
+  def apply(id: WarriorId): ActionCont[Warrior] = {
     ActionCont { f =>
       repository.resolveBy(id).flatMap {
-        case Some(w: Warrior) => f(w)
+        case Some(w) => f(w)
         case None => Future.successful(WarriorNotFound)
       }(ctx.ec)
     }

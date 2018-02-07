@@ -13,11 +13,10 @@ private[http] trait HttpStatusConverter extends JsonEncoder with WritableJsonCon
   implicit class StatusConverter(result: UseCaseResult) {
     def convertHttpStatus: Result = {
       result match {
-        case Normality => Ok
+        case NormalCase => Ok
         case x: EntityDuplicated => Conflict(x.asJson)
         case x: EntityNotFound => NotFound(x.asJson)
         case x: InvalidInputParameters => BadRequest(x.asJson(formErrorEncoder))
-        case _ => InternalServerError("A use-case-result did not match anything.")
       }
     }
   }

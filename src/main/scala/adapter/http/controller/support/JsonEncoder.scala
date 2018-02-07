@@ -1,6 +1,6 @@
 package adapter.http.controller.support
 
-import application.usecase.{Abnormality, InvalidInputParameters}
+import application.usecase.{AbnormalCase, InvalidInputParameters}
 import io.circe.{Encoder, Json}
 
 /**
@@ -8,7 +8,7 @@ import io.circe.{Encoder, Json}
   */
 private[controller] trait JsonEncoder {
 
-  implicit def failureResponseEncoder[T <: Abnormality]: Encoder[T] = {
+  implicit def failureResponseEncoder[T <: AbnormalCase]: Encoder[T] = {
     Encoder.instance { f =>
       Json.obj("message" -> Json.fromString(f.cause))
     }

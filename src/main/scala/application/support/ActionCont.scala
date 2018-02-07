@@ -18,5 +18,3 @@ object ActionCont {
   def failed[A](throwable: Throwable)(implicit ec: ExecutionContext): ActionCont[A] =
     fromFuture(Future.failed(throwable))
 }
-
-
