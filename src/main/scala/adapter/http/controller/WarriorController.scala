@@ -11,7 +11,7 @@ import scalaz.std.scalaFuture
 
 class WarriorController(
   cc: ControllerComponents,
-  identifyWarrior: FindWarrior,
+  findWarrior: FindWarrior,
   warriorEquippedNewWeapon: WarriorEquippedNewWeapon,
 ) extends AbstractController(cc) with HttpStatusConverter with FormHelper {
 
@@ -24,7 +24,7 @@ class WarriorController(
     val composedConts = for {
       form <- bindCont(EquipNewWeaponForm.apply)(r)
       (warriorId, weapon) = (WarriorId(form.warriorId), form.weapon)
-      warrior <- identifyWarrior(warriorId)
+      warrior <- findWarrior(warriorId)
       res <- warriorEquippedNewWeapon(warrior, weapon)
     } yield res
 
