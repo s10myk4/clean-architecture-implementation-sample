@@ -24,9 +24,11 @@ lazy val root = (project in file("."))
       "org.scalatest" %% "scalatest" % "3.0.4" % "test",
       "org.scalaz" %% "scalaz-core" % "7.2.16",
       "org.scalactic" %% "scalactic" % "3.0.4",
-      "io.circe"   %% "circe-core"                 % "0.8.0",
-      "io.circe"   %% "circe-generic"              % "0.8.0",
-      "io.circe"   %% "circe-parser"               % "0.8.0"
+      "io.circe" %% "circe-core" % "0.8.0",
+      "io.circe" %% "circe-generic" % "0.8.0",
+      "io.circe" %% "circe-parser" % "0.8.0",
+      "com.softwaremill.macwire" %% "macros" % "2.3.0" % "provided",
+      "com.softwaremill.macwire" %% "util" % "2.3.0"
     ),
     resolvers ++= Seq(
       "Sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases/",
