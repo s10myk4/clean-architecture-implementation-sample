@@ -20,13 +20,11 @@ trait WarriorEquippedNewWeapon {
 
 }
 
-final class WarriorEquippedNewWeaponImpl[Ctx <: IOContext](
-  ctx: Ctx,
-  repository: WarriorRepository[Future]
-) extends WarriorEquippedNewWeapon {
+final class WarriorEquippedNewWeaponImpl[Ctx <: IOContext](ctx: Ctx)(implicit repository: WarriorRepository[Future])
+  extends WarriorEquippedNewWeapon {
   def apply(warrior: Warrior, newWeapon: Weapon): ActionCont[UseCaseResult] =
     ActionCont { f =>
-      warrior.setNewWeapon(newWeapon) match {
+      warrior.equip(newWeapon) match {
         case Right(w) => repository.store(w).flatMap(_ => f(NormalCase))(ctx.ec)
         case Left(_) => Future.successful(InvalidCondition)
       }

@@ -7,6 +7,8 @@ resolvers += "Flyway" at "https://flywaydb.org/repo"
 resolvers += "Atlassian Releases" at "https://maven.atlassian.com/public/"
 resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases"
 
+addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.1")
+
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.10")
 
 addSbtPlugin("com.lucidchart" % "sbt-scalafmt" % "1.12")

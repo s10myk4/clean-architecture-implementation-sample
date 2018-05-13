@@ -1,5 +1,6 @@
 package domain.model.weapon
 
+import domain.model.Attribute.{DarkAttribute, LightAttribute}
 import domain.model._
 
 /**
@@ -28,9 +29,14 @@ object Weapon {
     val levelConditionOfEquipment: Int = 40
   }
 
-  def apply(str: String): Option[Weapon] = str match {
+  val weapons = Seq(
+    GoldSword,
+    BlackSword
+  )
+
+  def indexOf(str: String): Option[Weapon] = str match {
     case "goldSword" => Some(GoldSword)
-    case "blackSword"    => Some(BlackSword)
-    case _              => None
+    case "blackSword" => Some(BlackSword)
+    case _ => None
   }
 }

@@ -15,6 +15,6 @@ private[http] object EquipNewWeaponForm extends WeaponFormatter {
     mapping(
       "warriorId" -> longNumber,
       "weapon" -> of[Weapon],
-    )(EquipNewWeaponForm.apply)(EquipNewWeaponForm.unapply _)
+    )(EquipNewWeaponForm.apply)(EquipNewWeaponForm.unapply)
   )
 }
