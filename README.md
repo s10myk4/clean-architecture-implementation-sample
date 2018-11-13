@@ -1,5 +1,6 @@
-# use-case-implemented-by-contT
-A Sample of useCase implemented by using ContT.
+# クリーンアーキテクチャのサンプル実装 (A sample implementation of Clean Architecture)
+ユースケース層の実装にフォーカスしたサンプル実装です
+(This is a sample with a focus on the implementation of the usecase layer.)
 
 
 ```
