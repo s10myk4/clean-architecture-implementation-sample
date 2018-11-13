@@ -1,10 +1,9 @@
 package application
 
 import application.usecase.UseCaseResult
-
-import scala.concurrent.Future
 import scalaz.ContT
+import scala.language.higherKinds
 
 package object cont {
-  type ActionCont[A] = ContT[Future, UseCaseResult, A]
+  type ActionCont[F[_], A] = ContT[F, UseCaseResult, A]
 }

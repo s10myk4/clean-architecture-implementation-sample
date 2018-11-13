@@ -2,19 +2,24 @@ package application.support
 
 import application.cont.ActionCont
 import application.usecase.UseCaseResult
+import scalaz.{ContT, Monad}
 
 import scala.concurrent.{ExecutionContext, Future}
-import scalaz.ContT
+import scala.language.higherKinds
 
 object ActionCont {
-  def apply[A](f: (A => Future[UseCaseResult]) => Future[UseCaseResult]): ActionCont[A] = ContT(f)
+  def apply[F[_], A](f: (A => F[UseCaseResult]) => F[UseCaseResult]): ActionCont[F, A] = ContT(f)
 
-  def fromFuture[A](future: Future[A])(implicit ec: ExecutionContext): ActionCont[A] =
+  def point[F[_], A](a: => A): ActionCont[F, A] = ContT(f => f(a))
+
+  def liftM[M[_] : Monad, A](ma: M[A]): ActionCont[M, A] = ContT(f => Monad[M].bind(ma)(f))
+
+  def fromFuture[A](future: Future[A])(implicit ec: ExecutionContext): ActionCont[Future, A] =
     ContT(future.flatMap(_))
 
-  def successful[A](a: A)(implicit ec: ExecutionContext): ActionCont[A] =
+  def successful[A](a: A)(implicit ec: ExecutionContext): ActionCont[Future, A] =
     fromFuture(Future.successful(a))
 
-  def failed[A](throwable: Throwable)(implicit ec: ExecutionContext): ActionCont[A] =
+  def failed[A](throwable: Throwable)(implicit ec: ExecutionContext): ActionCont[Future, A] =
     fromFuture(Future.failed(throwable))
 }
