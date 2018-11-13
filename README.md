@@ -1,8 +1,13 @@
-# クリーンアーキテクチャのサンプル実装 (A sample implementation of Clean Architecture)
-ユースケース層の実装にフォーカスしたサンプル実装です
-(This is a sample with a focus on the implementation of the usecase layer.)
+# クリーンアーキテクチャのサンプル実装  (A sample implementation of Clean Architecture)
+
+ユースケース層の実装にフォーカスしたサンプル実装です  
+(This is a sample with a focus on the implementation of the usecase layer.)  
 
 
+#### 対象とする機能要求(シナリオ) 
+- ユーザーは、戦士に装備する武器を変更することができる
+
+#### ユースケース記述 
 ```
 [正常系]
 
