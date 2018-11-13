@@ -4,21 +4,23 @@ import application.cont.ActionCont
 import application.usecase.{InvalidInputParameters, UseCaseResult}
 import play.api.data.{Form, FormError}
 import play.api.mvc.{AnyContent, Request}
+import scalaz.{Applicative, ContT}
 
-import scala.concurrent.Future
-import scalaz.ContT
+import scala.language.higherKinds
 
 private[http] trait FormHelper {
 
-  def bindCont[A](form: Form[A])(implicit req: Request[AnyContent]): ActionCont[A] =
-    ContT(f =>
-      form.bindFromRequest.fold[Future[UseCaseResult]](
-        error => Future.successful(InvalidInputParameters("不正な内容です", convertFormErrorsToMap(error.errors))),
-        a => f(a)
+  implicit class FormOps[A](form: Form[A]) {
+    def bindCont[F[_] : Applicative](implicit req: Request[AnyContent]): ActionCont[F, A] =
+      ContT(f =>
+        form.bindFromRequest.fold[F[UseCaseResult]](
+          error => Applicative[F].pure(InvalidInputParameters("不正な内容です", convertFormErrorsToMap(error.errors))),
+          a => f(a)
+        )
       )
-    )
+  }
 
-  def convertFormErrorsToMap(errors: Seq[FormError]): Map[String, String] = {
+  private def convertFormErrorsToMap(errors: Seq[FormError]): Map[String, String] = {
     errors.map(e => e.key -> e.message).toMap
   }
 }
