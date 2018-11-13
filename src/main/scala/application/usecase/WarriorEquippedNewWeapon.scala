@@ -1,26 +1,20 @@
 package application.usecase
 
 import application.cont.ActionCont
-import application.support.ActionCont
+import application.support.cont.ActionCont
 import domain.lifcycle.{IOContext, WarriorRepository}
 import domain.model.character.warrior.Warrior
 import domain.model.weapon.Weapon
 
 import scala.concurrent.Future
+import scala.language.higherKinds
 
 /**
   * 戦士に新しい武器を装備する
   */
-trait WarriorEquippedNewWeapon {
-  def apply(warrior: Warrior, newWeapon: Weapon): ActionCont[UseCaseResult]
-
-  case object InvalidCondition extends AbnormalCase {
-    val cause: String = "この武器を装備するための条件を満たしていません"
-  }
-
-}
-
-final class WarriorEquippedNewWeaponImpl[Ctx <: IOContext](ctx: Ctx)(implicit repository: WarriorRepository[Future])
+final class WarriorEquippedNewWeaponImpl[F[_]](
+  repository: WarriorRepository[Future]
+)
   extends WarriorEquippedNewWeapon {
   def apply(warrior: Warrior, newWeapon: Weapon): ActionCont[UseCaseResult] =
     ActionCont { f =>
@@ -29,4 +23,16 @@ final class WarriorEquippedNewWeaponImpl[Ctx <: IOContext](ctx: Ctx)(implicit re
         case Left(_) => Future.successful(InvalidCondition)
       }
     }
+}
+
+object WarriorEquippedNewWeapon {
+
+  final case class EquipNewWeaponInput(
+    warriorId: Long,
+    weapon: Weapon
+  )
+
+  case object InvalidCondition extends AbnormalCase {
+    val cause: String = "この武器を装備するための条件を満たしていません"
+  }
 }
