@@ -19,13 +19,13 @@ The system creates and stores warriors equipped with selected weapons.
 The system displays a message "weapon changed" on the screen.
 
 Abnormal Case]
-・　If the level of the warrior is less than the level required to equip the selected weapon
+・If the level of the warrior is less than the level required to equip the selected weapon
 -> The system displays a message "We do not meet the conditions for equipping this weapon" on the weapon equipment screen.
 
-・ When the attribute of the warrior and the attribute of the selected weapon are different
+・When the attribute of the warrior and the attribute of the selected weapon are different
 -> The system displays a message "We do not meet the conditions for equipping this weapon" on the weapon equipment screen.
 
-・　If the designated warrior does not exist
+・If the designated warrior does not exist
 -> The system displays a message "target warrior does not exist" on the warrior list screen.
 
 
