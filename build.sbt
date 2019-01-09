@@ -1,5 +1,5 @@
-name := """use-case-implemented-by-ContT-sample"""
-organization := "com.example"
+name := "clean-architecture-implementation-sample"
+organization := "com.10myk4"
 
 version := "1.0-SNAPSHOT"
 
