@@ -1,4 +1,4 @@
-package adapter.http.controller.support
+package adapter.http.presenter.json
 
 import application.usecase.{AbnormalCase, InvalidInputParameters}
 import io.circe.{Encoder, Json}
@@ -6,7 +6,7 @@ import io.circe.{Encoder, Json}
 /**
   * HttpレスポンスをJsonに変換するエンコーダー
   */
-private[controller] trait JsonEncoder {
+private[presenter] trait JsonEncoder {
 
   implicit def failureResponseEncoder[T <: AbnormalCase]: Encoder[T] = {
     Encoder.instance { f =>
@@ -18,8 +18,7 @@ private[controller] trait JsonEncoder {
     Encoder.instance { error =>
       val message = "message" -> Json.fromString(error.cause)
       val formErrors = error.errors.map {
-        case (k, m) =>
-          k -> Json.fromString(m)
+        case (key, value) => key -> Json.fromString(value)
       }.toSeq
       Json.obj(message +: formErrors: _*)
     }

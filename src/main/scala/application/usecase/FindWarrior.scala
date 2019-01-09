@@ -17,13 +17,11 @@ final class FindWarrior[F[_] : Monad](
   repository: WarriorRepository[F]
 ) {
 
-  private val F: Monad[F] = implicitly
-
   def apply(id: WarriorId): ActionCont[F, Warrior] = {
     ActionCont { f =>
       repository.resolveBy(id).flatMap {
         case Some(w) => f(w)
-        case None => F.point(WarriorNotFound)
+        case None => Monad[F].point(WarriorNotFound)
       }
     }
   }

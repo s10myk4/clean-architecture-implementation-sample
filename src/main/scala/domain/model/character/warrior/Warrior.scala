@@ -2,22 +2,22 @@ package domain.model.character.warrior
 
 import domain.model.exception.ConditionViolatedException
 import domain.model.weapon.Weapon
-import domain.model.{Attribute, BaseEntity, Level}
+import domain.model.{Attribute, BaseEntity}
 
 /**
   * 戦士を表すドメインオブジェクト
   */
 sealed abstract case class Warrior(
   id: WarriorId,
-  name: String,
+  name: WarriorName,
   attribute: Attribute,
   weapon: Option[Weapon],
-  level: Level,
+  level: WarriorLevel,
 ) extends BaseEntity[WarriorId] {
 
   def equip(weapon: Weapon): Either[ConditionViolatedException, Warrior] = {
     if (isValidEquipmentCondition(weapon)) {
-      Right(new Warrior(this.id, this.name, this.attribute, Some(weapon), this.level) {})
+      Right(new Warrior(id, name, attribute, Some(weapon), level) {})
     } else {
       Left(new ConditionViolatedException("属性が一緒且つ、戦士のレベルが武器の指定レベル以上である必要があります。"))
     }
@@ -33,9 +33,9 @@ sealed abstract case class Warrior(
 object Warrior {
   def createWithoutWeapon(
     id: WarriorId,
-    name: String,
+    name: WarriorName,
     attribute: Attribute,
-    level: Level
+    level: WarriorLevel
   ): Warrior = {
     new Warrior(id, name, attribute, None, level) {}
   }

@@ -1,4 +1,4 @@
-package adapter.http.controller.support
+package adapter.http.presenter.json
 
 import io.circe.{Json, Printer}
 import play.api.http.{ContentTypeOf, ContentTypes, Writeable}

@@ -1,19 +1,18 @@
 package application.usecase
 
-import domain.lifcycle.DefaultIOContext
-import domain.lifcycle.WarriorRepository._
+import domain.lifcycle.WarriorRepository
 import domain.model.character.warrior.Warrior
 import domain.model.character.warrior.WarriorArbitrary._
 import domain.model.weapon.Weapon
 import domain.model.weapon.WeaponArbitrary._
 import org.scalatest.FlatSpec
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
+import scalaz.Id.Id
 import scalaz.std.scalaFuture
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext}
+import scala.concurrent.ExecutionContext
 
-class WarriorEquippedNewWeaponSpec
+class EquipNewWeaponToWarriorSpec
   extends FlatSpec
     with GeneratorDrivenPropertyChecks {
 
@@ -22,16 +21,15 @@ class WarriorEquippedNewWeaponSpec
   it should "成功する" in {
     implicit val fm = scalaFuture.futureInstance(ExecutionContext.global)
 
-    val uc = new WarriorEquippedNewWeaponImpl(
-      DefaultIOContext
-    )
+    val repository: WarriorRepository[Id] = ???
+
+    val useCase = new EquipNewWeaponToWarrior[Id](repository)
     forAll { (warrior: Warrior, weapon: Weapon) =>
       whenever(
         warrior.attribute == weapon.attribute &&
           weapon.levelConditionOfEquipment <= warrior.level.value
       ) {
-        val result = Await.result(uc(warrior, weapon).run_, Duration.Inf)
-        assert(result === NormalCase)
+        assert(useCase(warrior, weapon) === NormalCase)
       }
     }
   }
