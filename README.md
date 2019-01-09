@@ -13,7 +13,7 @@ The system displays the detailed screen of the warrior.
 The user taps the weapon equipped button.
 The system acquires the weapon list and displays it on the weapon equipment screen.
 The user selects a weapon that he wants to equip warrior from the list and taps.
-he system checks whether the selected weapon is at or above the level required for equipping it.
+The system checks whether the selected weapon is at or above the level required for equipping it.
 The system checks whether the attribute of the selected weapon is the same as the attribute of the warrior.
 The system creates and stores warriors equipped with selected weapons.
 The system displays a message "weapon changed" on the screen.
