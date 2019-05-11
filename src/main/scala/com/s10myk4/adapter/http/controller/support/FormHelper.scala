@@ -1,10 +1,11 @@
 package com.s10myk4.adapter.http.controller.support
 
+import cats.Applicative
+import cats.data.ContT
 import com.s10myk4.application.cont.ActionCont
 import com.s10myk4.application.usecase.{InvalidInputParameters, UseCaseResult}
 import play.api.data.{Form, FormError}
 import play.api.mvc.{AnyContent, Request}
-import scalaz.{Applicative, ContT}
 
 import scala.language.higherKinds
 

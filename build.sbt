@@ -3,15 +3,17 @@ organization := "com.10myk4"
 
 version := "1.0-SNAPSHOT"
 
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.8"
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8", "-Xlint")
 
-scalacOptions ++= Seq("-unchecked",
+scalacOptions ++= Seq(
+  "-unchecked",
   "-deprecation",
   "-feature",
   "-language:reflectiveCalls",
   "-language:implicitConversions",
+  "-Ypartial-unification",
 )
 
 scalacOptions in Test ++= Seq("-Yrangepos")
@@ -26,9 +28,11 @@ lazy val root = (project in file("."))
       "org.scalacheck" %% "scalacheck" % "1.14.0" % Test,
       "org.scalaz" %% "scalaz-core" % "7.2.16",
       "org.scalactic" %% "scalactic" % "3.0.4",
-      "io.circe"   %% "circe-core"                 % "0.8.0",
-      "io.circe"   %% "circe-generic"              % "0.8.0",
-      "io.circe"   %% "circe-parser"               % "0.8.0"
+      "org.typelevel" %% "cats-core" % "1.6.0",
+      "org.typelevel" %% "cats-effect" % "1.3.0",
+      "io.circe"   %% "circe-core"                 % "0.10.0",
+      "io.circe"   %% "circe-generic"              % "0.10.0",
+      "io.circe"   %% "circe-parser"               % "0.10.0"
     ),
     resolvers ++= Seq(
       "Sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases/",

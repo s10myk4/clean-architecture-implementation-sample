@@ -1,8 +1,8 @@
 package com.s10myk4.application.support
 
+import cats.data.ContT
 import com.s10myk4.application.cont.ActionCont
 import com.s10myk4.application.usecase.UseCaseResult
-import scalaz.{ContT, Monad}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.higherKinds
@@ -12,7 +12,7 @@ object ActionCont {
 
   def point[F[_], A](a: => A): ActionCont[F, A] = ContT(f => f(a))
 
-  def liftM[M[_] : Monad, A](ma: M[A]): ActionCont[M, A] = ContT(f => Monad[M].bind(ma)(f))
+  //def liftM[M[_] : Monad, A](ma: M[A]): ActionCont[M, A] = ContT(f => Monad[M].point(ma)(f))
 
   def fromFuture[A](future: Future[A])(implicit ec: ExecutionContext): ActionCont[Future, A] =
     ContT(future.flatMap(_))
