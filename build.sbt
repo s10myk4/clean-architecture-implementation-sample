@@ -26,13 +26,14 @@ lazy val root = (project in file("."))
       "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test,
       "org.scalatest" %% "scalatest" % "3.0.4" % Test,
       "org.scalacheck" %% "scalacheck" % "1.14.0" % Test,
+      "org.mockito" % "mockito-core" % "2.10.0" % Test,
       "org.scalaz" %% "scalaz-core" % "7.2.16",
       "org.scalactic" %% "scalactic" % "3.0.4",
       "org.typelevel" %% "cats-core" % "1.6.0",
       "org.typelevel" %% "cats-effect" % "1.3.0",
-      "io.circe"   %% "circe-core"                 % "0.10.0",
-      "io.circe"   %% "circe-generic"              % "0.10.0",
-      "io.circe"   %% "circe-parser"               % "0.10.0"
+      "io.circe" %% "circe-core" % "0.10.0",
+      "io.circe" %% "circe-generic" % "0.10.0",
+      "io.circe" %% "circe-parser" % "0.10.0"
     ),
     resolvers ++= Seq(
       "Sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases/",
@@ -42,7 +43,3 @@ lazy val root = (project in file("."))
     ),
     addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.4")
   )
-
-
-
-
