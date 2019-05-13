@@ -5,5 +5,5 @@ import scala.language.higherKinds
 import cats.data.ContT
 
 package object cont {
-  type ActionCont[F[_], A] = ContT[F, UseCaseResult, A]
+  type UseCaseCont[F[_], A] = ContT[F, UseCaseResult, A]
 }
