@@ -13,14 +13,14 @@ import scala.language.higherKinds
 /**
   * 戦士を取得する
   */
-final class FindWarrior[F[_] : Monad](
-                                       repository: WarriorRepository[F]
-                                     ) {
+final class FindWarrior[F[_]: Monad](
+    repository: WarriorRepository[F]
+) {
 
   def apply(id: WarriorId): ActionCont[F, Warrior] = ActionCont { f =>
     repository.resolveBy(id).flatMap {
       case Some(w) => f(w)
-      case None => Monad[F].point(WarriorNotFound)
+      case None    => Monad[F].point(WarriorNotFound)
     }
   }
 

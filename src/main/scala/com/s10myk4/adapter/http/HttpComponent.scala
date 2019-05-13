@@ -7,8 +7,7 @@ import play.api.mvc.ControllerComponents
 
 import scala.concurrent.ExecutionContext
 
-trait HttpComponent {
-  _: UseCaseComponent =>
+trait HttpComponent { _: UseCaseComponent =>
 
   def controllerComponents: ControllerComponents
 

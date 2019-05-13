@@ -18,6 +18,10 @@ scalacOptions ++= Seq(
 
 scalacOptions in Test ++= Seq("-Yrangepos")
 
+scalafmtConfig in ThisBuild := file(".scalafmt.conf")
+
+scalafmtOnCompile := true
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
   .disablePlugins(PlayLayoutPlugin)

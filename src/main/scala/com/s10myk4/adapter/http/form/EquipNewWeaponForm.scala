@@ -6,14 +6,12 @@ import com.s10myk4.domain.model.weapon.Weapon
 import play.api.data.Form
 import play.api.data.Forms._
 
-private[http] object EquipNewWeaponForm
-  extends WeaponFormatter {
+private[http] object EquipNewWeaponForm extends WeaponFormatter {
 
   def apply: Form[EquipNewWeaponToWarriorInput] = Form(
     mapping(
       "warriorId" -> longNumber,
-      "weapon" -> of[Weapon],
+      "weapon"    -> of[Weapon]
     )(EquipNewWeaponToWarriorInput.apply)(EquipNewWeaponToWarriorInput.unapply)
   )
 }
-

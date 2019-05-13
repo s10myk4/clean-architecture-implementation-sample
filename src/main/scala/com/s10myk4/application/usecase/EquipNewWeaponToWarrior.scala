@@ -16,22 +16,19 @@ import scala.language.higherKinds
 /**
   * 戦士に新しい武器を装備する
   */
-
 //UseCaseの異常系とドメインの異常を型としてどう扱うか
 //基本的には意識しない方向にしたい
-final class EquipNewWeaponToWarrior[F[_] : Monad](
-                                                   repository: WarriorRepository[F]
-                                                 ) {
+final class EquipNewWeaponToWarrior[F[_]: Monad](
+    repository: WarriorRepository[F]
+) {
 
   import EquipNewWeaponToWarrior._
 
   def apply(warrior: Warrior, newWeapon: Weapon): ActionCont[F, UseCaseResult] =
     ActionCont { f =>
       warrior.equip(newWeapon) match {
-        case Valid(w) =>
-          repository.store(w).flatMap(_ => f(NormalCase))
-        case Invalid(err) =>
-          Monad[F].point(err.toUseCaseResult)
+        case Valid(w)     => repository.store(w).flatMap(_ => f(NormalCase))
+        case Invalid(err) => Monad[F].point(err)
       }
     }
 }
@@ -39,19 +36,17 @@ final class EquipNewWeaponToWarrior[F[_] : Monad](
 object EquipNewWeaponToWarrior {
 
   final case class EquipNewWeaponToWarriorInput(
-                                                 warriorId: Long,
-                                                 weapon: Weapon
-                                               )
+      warriorId: Long,
+      weapon: Weapon
+  )
 
-  //TODO
-  implicit class domainErrorHandler(domainErrors: NonEmptyList[WarriorError]) {
-    def toUseCaseResult: UseCaseResult =
-      domainErrors match {
-        case NonEmptyList(h: DifferentAttributeError, t) if t.isEmpty => DeffrentAttribute()
-        case NonEmptyList(h: NotOverLevelError, t) if t.isEmpty => NotOverLevel()
-        case _ => DeffrentAttributeAndNotOverLevel()
-      }
-  }
+  implicit def toUseCaseResult(domainErrors: NonEmptyList[WarriorError]): UseCaseResult =
+    domainErrors match {
+      case NonEmptyList(h: DifferentAttributeError, t) if t.isEmpty =>
+        DeffrentAttribute()
+      case NonEmptyList(h: NotOverLevelError, t) if t.isEmpty => NotOverLevel()
+      case _                                                  => DeffrentAttributeAndNotOverLevel()
+    }
 
   final case class DeffrentAttributeAndNotOverLevel() extends AbnormalCase {
     override val cause: String = ""
@@ -69,5 +64,5 @@ object EquipNewWeaponToWarrior {
   case object InvalidCondition extends AbnormalCase {
     val cause: String = "この武器を装備するための条件を満たしていません"
   }
-   */
+ */
 }
