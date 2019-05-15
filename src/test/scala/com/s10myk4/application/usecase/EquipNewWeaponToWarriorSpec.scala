@@ -2,7 +2,6 @@ package com.s10myk4.application.usecase
 
 import com.s10myk4.domain.lifcycle.WarriorRepository
 import com.s10myk4.domain.model.character.warrior.{Warrior, WarriorId, WarriorLevel, WarriorName}
-import com.s10myk4.domain.model.character.warrior.WarriorArbitrary.warriorArb
 import com.s10myk4.domain.model.weapon.Weapon
 import com.s10myk4.domain.model.weapon.WeaponArbitrary.weaponArb
 import org.scalatest.FlatSpec
@@ -15,7 +14,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 
 class EquipNewWeaponToWarriorSpec
-  extends FlatSpec
+    extends FlatSpec
     //with GeneratorDrivenPropertyChecks
     with MockitoSugar {
 
@@ -26,7 +25,7 @@ class EquipNewWeaponToWarriorSpec
     when(repository.store(any[Warrior])).thenReturn(())
 
     val warrior = (for {
-      name <- WarriorName("せんしくん").toOption
+      name  <- WarriorName("せんしくん").toOption
       level <- WarriorLevel.apply(40).toOption
     } yield {
       Warrior.createWithoutWeapon(WarriorId(1L), name, LightAttribute, level)
@@ -43,6 +42,6 @@ class EquipNewWeaponToWarriorSpec
         assert(useCase(warrior, weapon) === NormalCase)
       }
     }
-     */
+   */
   }
 }

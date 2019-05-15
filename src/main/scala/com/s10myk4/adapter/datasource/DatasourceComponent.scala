@@ -8,5 +8,3 @@ trait DatasourceComponent {
   lazy val warriorRepository: WarriorRepository[IO] = ???
 
 }
-
-

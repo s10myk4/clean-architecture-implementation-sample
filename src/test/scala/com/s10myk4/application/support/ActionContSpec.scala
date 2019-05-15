@@ -28,7 +28,5 @@ class ActionContSpec extends FlatSpec {
     } yield a + b + c
     recoverToSucceededIf[Exception](res.run_)
   }
-   */
+ */
 }
-
-

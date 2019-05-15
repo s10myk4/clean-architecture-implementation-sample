@@ -12,12 +12,13 @@ import scala.language.higherKinds
 private[http] trait FormHelper {
 
   implicit class FormOps[A](form: Form[A]) {
-    def bindCont[F[_] : Applicative](implicit req: Request[AnyContent]): ActionCont[F, A] =
-      ContT(f =>
-        form.bindFromRequest.fold[F[UseCaseResult]](
-          error => Applicative[F].pure(InvalidInputParameters("不正な内容です", convertFormErrorsToMap(error.errors))),
-          a => f(a)
-        )
+    def bindCont[F[_]: Applicative](implicit req: Request[AnyContent]): ActionCont[F, A] =
+      ContT(
+        f =>
+          form.bindFromRequest.fold[F[UseCaseResult]](
+            error => Applicative[F].pure(InvalidInputParameters("不正な内容です", convertFormErrorsToMap(error.errors))),
+            a => f(a)
+          )
       )
   }
 

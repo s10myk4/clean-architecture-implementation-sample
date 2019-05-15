@@ -8,7 +8,8 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.language.higherKinds
 
 object ActionCont {
-  def apply[F[_], A](f: (A => F[UseCaseResult]) => F[UseCaseResult]): ActionCont[F, A] = ContT(f)
+  def apply[F[_], A](f: (A => F[UseCaseResult]) => F[UseCaseResult]): ActionCont[F, A] =
+    ContT(f)
 
   def point[F[_], A](a: => A): ActionCont[F, A] = ContT(f => f(a))
 

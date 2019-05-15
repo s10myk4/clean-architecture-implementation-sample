@@ -7,14 +7,13 @@ import com.s10myk4.domain.model.{Attribute, BaseEntity}
 
 import cats.syntax.validated._
 
-
 sealed abstract case class Warrior(
-                                    id: WarriorId,
-                                    name: WarriorName,
-                                    attribute: Attribute,
-                                    weapon: Option[Weapon],
-                                    level: WarriorLevel,
-                                  ) extends BaseEntity[WarriorId] {
+    id: WarriorId,
+    name: WarriorName,
+    attribute: Attribute,
+    weapon: Option[Weapon],
+    level: WarriorLevel
+) extends BaseEntity[WarriorId] {
 
   def equip(weapon: Weapon): ValidatedNel[WarriorError, Warrior] = {
     if (!isSameAttribute(weapon)) new DifferentAttributeError().invalidNel
@@ -30,11 +29,11 @@ sealed abstract case class Warrior(
 
 object Warrior {
   def createWithoutWeapon(
-                           id: WarriorId,
-                           name: WarriorName,
-                           attribute: Attribute,
-                           level: WarriorLevel
-                         ): Warrior = {
+      id: WarriorId,
+      name: WarriorName,
+      attribute: Attribute,
+      level: WarriorLevel
+  ): Warrior = {
     new Warrior(id, name, attribute, None, level) {}
   }
 
@@ -45,7 +44,7 @@ object Warrior {
         new Warrior(id, name, Attribute.NormalAttribute, None, level){}
     }
   }
-  */
+   */
 
   def createDefault(id: WarriorId): ValidatedNel[WarriorError, Warrior] = ???
 

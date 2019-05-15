@@ -18,7 +18,7 @@ final class CustomApplicationLoader extends ApplicationLoader {
   }
 
   class Components(context: Context)
-    extends BuiltInComponentsFromContext(context)
+      extends BuiltInComponentsFromContext(context)
       with SecurityHeadersComponents
       with AllowedHostsComponents
       with HttpComponent
@@ -33,7 +33,8 @@ final class CustomApplicationLoader extends ApplicationLoader {
       routePrefix
     )
 
-    lazy val httpFilters: Seq[EssentialFilter] = Seq(securityHeadersFilter, allowedHostsFilter)
+    lazy val httpFilters: Seq[EssentialFilter] =
+      Seq(securityHeadersFilter, allowedHostsFilter)
 
     LoggerConfigurator(context.environment.classLoader).foreach {
       _.configure(context.environment, context.initialConfiguration, Map.empty)
