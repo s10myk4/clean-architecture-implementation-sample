@@ -7,12 +7,14 @@ object Attribute {
   case object DarkAttribute extends Attribute
   case object WaterAttribute extends Attribute
   case object FireAttribute extends Attribute
+  case object NormalAttribute extends Attribute
 
   val attributes = Seq(
     LightAttribute,
     DarkAttribute,
     WaterAttribute,
-    FireAttribute
+    FireAttribute,
+    NormalAttribute
   )
 }
 
