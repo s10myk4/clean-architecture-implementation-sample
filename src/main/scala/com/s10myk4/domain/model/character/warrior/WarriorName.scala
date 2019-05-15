@@ -1,3 +1,20 @@
 package com.s10myk4.domain.model.character.warrior
 
-final case class WarriorName(value: String)
+import cats.data.ValidatedNel
+import cats.syntax.validated._
+
+sealed abstract case class WarriorName(value: String)
+
+object WarriorName {
+
+  def apply(value: String): ValidatedNel[WarriorError, WarriorName] = {
+    val length = value.length
+    if (1 <= length & length <= 20) WarriorName(value)
+    else WarriorNameLengthError(length).invalidNel
+  }
+
+  final case class WarriorNameLengthError(length: Int) extends WarriorError {
+    val cause = s"$length is a invalid warrior name size"
+  }
+
+}
