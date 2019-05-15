@@ -1,7 +1,7 @@
 package com.s10myk4.application.usecase
 
-import com.s10myk4.application.cont.ActionCont
-import com.s10myk4.application.support.ActionCont
+import com.s10myk4.application.cont.UseCaseCont
+import com.s10myk4.application.support.UseCaseCont
 import com.s10myk4.domain.lifcycle.WarriorRepository
 import com.s10myk4.domain.model.character.warrior.Warrior.{DifferentAttributeError, NotOverLevelError}
 import com.s10myk4.domain.model.character.warrior.{Warrior, WarriorError}
@@ -24,8 +24,8 @@ final class EquipNewWeaponToWarrior[F[_]: Monad](
 
   import EquipNewWeaponToWarrior._
 
-  def apply(warrior: Warrior, newWeapon: Weapon): ActionCont[F, UseCaseResult] =
-    ActionCont { f =>
+  def apply(warrior: Warrior, newWeapon: Weapon): UseCaseCont[F, UseCaseResult] =
+    UseCaseCont { f =>
       warrior.equip(newWeapon) match {
         case Valid(w)     => repository.store(w).flatMap(_ => f(NormalCase))
         case Invalid(err) => Monad[F].point(err)

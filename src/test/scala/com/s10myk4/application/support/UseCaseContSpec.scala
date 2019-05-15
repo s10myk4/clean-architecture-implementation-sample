@@ -5,7 +5,7 @@ import cats.data.ContT
 import cats.effect.IO
 import org.scalatest.FlatSpec
 
-class ActionContSpec extends FlatSpec {
+class UseCaseContSpec extends FlatSpec {
 
   behavior of "ActionCont"
 
