@@ -2,18 +2,21 @@ package com.s10myk4.domain.model.weapon
 
 import com.s10myk4.domain.model.Attribute.{DarkAttribute, LightAttribute}
 import com.s10myk4.domain.model._
+import enumeratum._
 
 /**
   * 武器を表すドメインオブジェクト
   */
-sealed trait Weapon {
+sealed trait Weapon extends EnumEntry {
   val name: String
   val offensivePower: Int
   val attribute: Attribute
   val levelConditionOfEquipment: Int
 }
 
-object Weapon {
+object Weapon extends Enum[Weapon] {
+
+  val values = findValues
 
   case object GoldSword extends Weapon {
     val name: String                   = "gold sword"
@@ -28,15 +31,5 @@ object Weapon {
     val attribute: Attribute           = DarkAttribute
     val levelConditionOfEquipment: Int = 40
   }
-
-  val weapons = Seq(
-    GoldSword,
-    BlackSword
-  )
-
-  def indexOf(str: String): Option[Weapon] = str match {
-    case "goldSword"  => Some(GoldSword)
-    case "blackSword" => Some(BlackSword)
-    case _            => None
-  }
 }
+

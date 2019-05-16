@@ -21,16 +21,16 @@ final class WarriorController(
     with FormHelper
     with ActionSupport {
 
-  def equipNewWeapon: EssentialAction = Action.async { implicit r =>
+  def equipWeapon(id: Long): EssentialAction = Action.async { implicit r =>
     //継続モナドを合成
     val composedCont: ContT[IO, UseCaseResult, UseCaseResult] = for {
       form <- EquipNewWeaponForm.apply.bindCont[IO]
-      (warriorId, weapon) = (WarriorId(form.warriorId), form.weapon)
+      (warriorId, weapon) = (WarriorId(id), form.weapon)
       warrior <- findWarrior.apply(warriorId)
       res     <- warriorEquippedNewWeapon.apply(warrior, weapon)
     } yield res
 
-    //合成した継続モナドに Futureのモナドインスタンスを適用して実行
+    //合成した継続モナドに IOのApplicative Functorを適用し実行する
     val res = composedCont.run(Applicative[IO].pure)
     //ユースケースの結果をplay.api.mvc.Resultに変換
     res.map(presenter.present).toFuture

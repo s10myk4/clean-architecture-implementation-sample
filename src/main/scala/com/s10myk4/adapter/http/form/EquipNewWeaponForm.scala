@@ -10,8 +10,7 @@ private[http] object EquipNewWeaponForm extends WeaponFormatter {
 
   def apply: Form[EquipNewWeaponToWarriorInput] = Form(
     mapping(
-      "warriorId" -> longNumber,
-      "weapon"    -> of[Weapon]
+      "weapon" -> of[Weapon]
     )(EquipNewWeaponToWarriorInput.apply)(EquipNewWeaponToWarriorInput.unapply)
   )
 }

@@ -16,7 +16,7 @@ private[http] trait FormHelper {
       ContT(
         f =>
           form.bindFromRequest.fold[F[UseCaseResult]](
-            error => Applicative[F].pure(InvalidInputParameters("不正な内容です", convertFormErrorsToMap(error.errors))),
+            error => Applicative[F].pure(InvalidInputParameters(errors = convertFormErrorsToMap(error.errors))),
             a => f(a)
           )
       )

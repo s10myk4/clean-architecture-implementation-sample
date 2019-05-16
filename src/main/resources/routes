@@ -1,1 +1,1 @@
-POST        /api/warriors/new/weapons        com.s10myk4.adapter.http.controller.WarriorController.equipNewWeapon
+PUT        /api/warriors/:warriorId/weapons        com.s10myk4.adapter.http.controller.WarriorController.equipWeapon

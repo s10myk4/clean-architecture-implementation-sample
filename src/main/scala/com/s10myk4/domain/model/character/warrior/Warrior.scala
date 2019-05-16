@@ -33,23 +33,11 @@ object Warrior {
       name: WarriorName,
       attribute: Attribute,
       level: WarriorLevel
-  ): Warrior = {
-    new Warrior(id, name, attribute, None, level) {}
-  }
-
-  /*
-  def createDefault(id: WarriorId): ValidationNel[WarriorError, Warrior] = {
-    (WarriorName("default" + id.value) |@| WarriorLevel(1)) {
-      (name, level) =>
-        new Warrior(id, name, Attribute.NormalAttribute, None, level){}
-    }
-  }
-   */
+  ): Warrior = new Warrior(id, name, attribute, None, level) {}
 
   def createDefault(id: WarriorId): ValidatedNel[WarriorError, Warrior] = ???
 
-  final class DifferentAttributeError extends WarriorError
+  final case class DifferentAttributeError(warriorAttr: Attribute, weapon: Weapon) extends WarriorError
 
-  final class NotOverLevelError extends WarriorError
-
+  final case class NotOverLevelError(warriorLevel: WarriorLevel, weapon: Weapon) extends WarriorError
 }

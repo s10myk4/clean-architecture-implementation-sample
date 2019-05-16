@@ -14,6 +14,10 @@ trait AbnormalCase extends UseCaseResult {
   val cause: String
 }
 
+object NotConsideredDomainError extends AbnormalCase {
+  val cause = "This domain error is not considered"
+}
+
 /**
   * エンティティが存在しない
   */
@@ -27,4 +31,5 @@ trait EntityDuplicated extends AbnormalCase
 /**
   * 不正な入力値
   */
-final case class InvalidInputParameters(cause: String = "不正な入力値です", errors: Map[String, String]) extends AbnormalCase
+final case class InvalidInputParameters(cause: String = "Invalid input parameters", errors: Map[String, String])
+    extends AbnormalCase
