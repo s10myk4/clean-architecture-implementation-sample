@@ -32,4 +32,3 @@ object Weapon extends Enum[Weapon] {
     val levelConditionOfEquipment: Int = 40
   }
 }
-

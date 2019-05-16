@@ -16,8 +16,8 @@ sealed abstract case class Warrior(
 ) extends BaseEntity[WarriorId] {
 
   def equip(weapon: Weapon): ValidatedNel[WarriorError, Warrior] = {
-    if (!isSameAttribute(weapon)) new DifferentAttributeError().invalidNel
-    else if (!isOverLevel(weapon)) new NotOverLevelError().invalidNel
+    if (!isSameAttribute(weapon)) DifferentAttributeError(attribute, weapon).invalidNel
+    else if (!isOverLevel(weapon)) NotOverLevelError(level, weapon).invalidNel
     else new Warrior(id, name, attribute, Some(weapon), level) {}.validNel
   }
 

@@ -12,7 +12,7 @@ private[http] trait WeaponFormatter {
     override val format = Some(("format.weapon", Nil))
 
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Weapon] =
-      parsing(Weapon.indexOf(_).get, "error.invalidFormat", Nil)(key, data)
+      parsing(Weapon.withName, "error.invalidFormat", Nil)(key, data)
 
     override def unbind(key: String, value: Weapon) =
       Map(key -> value.toString)

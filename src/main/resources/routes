@@ -1,1 +1,1 @@
-PUT        /api/warriors/:warriorId/weapons        com.s10myk4.adapter.http.controller.WarriorController.equipWeapon
+PUT        /api/warriors/:warriorId/weapons        com.s10myk4.adapter.http.controller.WarriorController.equipWeapon(warriorId: Long)

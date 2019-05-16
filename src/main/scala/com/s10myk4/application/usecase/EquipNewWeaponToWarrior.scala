@@ -42,12 +42,11 @@ object EquipNewWeaponToWarrior {
   implicit def toUseCaseResult(domainErrors: NonEmptyList[WarriorError]): UseCaseResult =
     domainErrors match {
       case NonEmptyList(h: DifferentAttributeError, t) if t.isEmpty => DifferentAttribute(h)
-      case NonEmptyList(h: NotOverLevelError, t) if t.isEmpty => NotOverLevel(h)
-      case                                                   => DeffrentAttributeAndNotOverLevel()
+      case NonEmptyList(h: NotOverLevelError, t) if t.isEmpty       => NotOverLevel(h)
+      case _                                                        => DeffrentAttributeAndNotOverLevel()
     }
 
-  final case class DeffrentAttributeAndNotOverLevel(err1: DifferentAttributeError, err2: NotOverLevelError)
-    extends AbnormalCase {
+  final case class DeffrentAttributeAndNotOverLevel() extends AbnormalCase {
     override val cause: String = ""
   }
 
