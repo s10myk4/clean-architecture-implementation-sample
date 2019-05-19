@@ -7,9 +7,9 @@ sealed abstract case class WarriorName(value: String)
 
 object WarriorName {
 
-  def apply(value: String): ValidatedNel[WarriorError, WarriorName] = {
+  def of(value: String): ValidatedNel[WarriorError, WarriorName] = {
     val length = value.length
-    if (1 <= length & length <= 20) WarriorName(value)
+    if (1 <= length & length <= 20) new WarriorName(value) {}.valid
     else WarriorNameLengthError(length).invalidNel
   }
 
