@@ -31,8 +31,6 @@ lazy val root = (project in file("."))
         "org.scalatest"          %% "scalatest"          % "3.0.4" % Test,
         "org.scalacheck"         %% "scalacheck"         % "1.14.0" % Test,
         "org.mockito"            % "mockito-core"        % "2.10.0" % Test,
-        "org.scalaz"             %% "scalaz-core"        % "7.2.16",
-        "org.scalactic"          %% "scalactic"          % "3.0.4",
         "org.typelevel"          %% "cats-core"          % "1.6.0",
         "org.typelevel"          %% "cats-effect"        % "1.3.0",
         "io.circe"               %% "circe-core"         % "0.10.0",
