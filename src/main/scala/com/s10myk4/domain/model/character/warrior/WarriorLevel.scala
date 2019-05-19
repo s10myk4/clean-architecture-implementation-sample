@@ -15,5 +15,4 @@ object WarriorLevel {
   final case class WarriorLevelError(value: Int) extends WarriorError {
     val cause = s"$value is a invalid warrior level"
   }
-
 }

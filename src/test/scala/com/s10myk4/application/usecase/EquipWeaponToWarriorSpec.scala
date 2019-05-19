@@ -13,7 +13,7 @@ import org.scalatest.mockito.MockitoSugar
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 
-class EquipNewWeaponToWarriorSpec
+class EquipWeaponToWarriorSpec
     extends FlatSpec
     //with GeneratorDrivenPropertyChecks
     with MockitoSugar {
@@ -31,8 +31,8 @@ class EquipNewWeaponToWarriorSpec
       Warrior.createWithoutWeapon(WarriorId(1L), name, LightAttribute, level)
     }).get
 
-    val useCase = new EquipNewWeaponToWarrior[Id](repository)
-    assert(useCase.apply(warrior, GoldSword) === NormalCase)
+    val useCase = new EquipWeaponToWarrior[Id](repository)
+    assert(useCase.exec(warrior, GoldSword) === NormalCase)
     /*
     forAll { (warrior: Warrior, weapon: Weapon) =>
       whenever(

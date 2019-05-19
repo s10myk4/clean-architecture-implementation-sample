@@ -16,15 +16,13 @@ import scala.language.higherKinds
 /**
   * 戦士に新しい武器を装備する
   */
-//UseCaseの異常系とドメインの異常を型としてどう扱うか
-//基本的には意識しない方向にしたい
-final class EquipNewWeaponToWarrior[F[_]: Monad](
+final class EquipWeaponToWarrior[F[_]: Monad](
     repository: WarriorRepository[F]
 ) {
 
-  import EquipNewWeaponToWarrior._
+  import EquipWeaponToWarrior._
 
-  def apply(warrior: Warrior, newWeapon: Weapon): UseCaseCont[F, UseCaseResult] =
+  def exec(warrior: Warrior, newWeapon: Weapon): UseCaseCont[F, UseCaseResult] =
     UseCaseCont { f =>
       warrior.equip(newWeapon) match {
         case Valid(w)     => repository.store(w).flatMap(_ => f(NormalCase))
@@ -33,9 +31,9 @@ final class EquipNewWeaponToWarrior[F[_]: Monad](
     }
 }
 
-object EquipNewWeaponToWarrior {
+object EquipWeaponToWarrior {
 
-  final case class EquipNewWeaponToWarriorInput(
+  final case class EquipWeaponToWarriorInput(
       weapon: Weapon
   )
 
@@ -43,20 +41,22 @@ object EquipNewWeaponToWarrior {
     domainErrors match {
       case NonEmptyList(h: DifferentAttributeError, t) if t.isEmpty => DifferentAttribute(h)
       case NonEmptyList(h: NotOverLevelError, t) if t.isEmpty       => NotOverLevel(h)
-      case _                                                        => DeffrentAttributeAndNotOverLevel()
+      //case _                                                        => DifferentAttributeAndNotOverLevel()
     }
 
-  final case class DeffrentAttributeAndNotOverLevel() extends AbnormalCase {
-    override val cause: String = ""
+  final case class DifferentAttributeAndNotOverLevel(err1: DifferentAttributeError, err2: NotOverLevelError)
+      extends AbnormalCase {
+    val cause: String = s"${DifferentAttribute(err1).cause} and ${NotOverLevel(err2).cause}"
   }
 
   final case class DifferentAttribute(err: DifferentAttributeError) extends AbnormalCase {
     val cause: String =
-      s"The ${err.weapon.attribute.entryName} is different warrior attribute of ${err.warriorAttr.entryName}"
+      s"Weapon attribute:${err.weapon.attribute.entryName} is different warrior attribute:${err.warriorAttr.entryName}"
   }
 
   final case class NotOverLevel(err: NotOverLevelError) extends AbnormalCase {
-    val cause: String = ""
+    val cause: String =
+      s"Warrior level:${err.warriorLevel.value} is not over weapon level:${err.weapon.levelConditionOfEquipment}"
   }
 
 }
