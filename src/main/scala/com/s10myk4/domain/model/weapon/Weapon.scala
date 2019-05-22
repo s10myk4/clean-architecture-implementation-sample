@@ -4,9 +4,6 @@ import com.s10myk4.domain.model.Attribute.{DarkAttribute, LightAttribute}
 import com.s10myk4.domain.model._
 import enumeratum._
 
-/**
-  * 武器を表すドメインオブジェクト
-  */
 sealed trait Weapon extends EnumEntry {
   val name: String
   val offensivePower: Int
