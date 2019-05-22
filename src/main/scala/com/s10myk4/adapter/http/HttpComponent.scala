@@ -1,9 +1,9 @@
 package com.s10myk4.adapter.http
 
 import com.s10myk4.adapter.http.controller.WarriorController
-import com.s10myk4.adapter.http.presenter.json.DefaultPresenter
-import com.s10myk4.application.usecase.UseCaseComponent
-import play.api.mvc.ControllerComponents
+import com.s10myk4.adapter.http.presenter.json.WarriorPresenter
+import com.s10myk4.application.usecase.{Presenter, UseCaseComponent, UseCaseResult}
+import play.api.mvc.{ControllerComponents, Result}
 
 import scala.concurrent.ExecutionContext
 
@@ -13,9 +13,9 @@ trait HttpComponent { _: UseCaseComponent =>
 
   lazy val ec: ExecutionContext = ExecutionContext.global
 
-  lazy val defaultPresenter: DefaultPresenter = new DefaultPresenter
+  lazy val presenter: Presenter[UseCaseResult, Result] = new WarriorPresenter
 
   lazy val warriorController: WarriorController =
-    new WarriorController(controllerComponents, findWarrior, equipNewWeaponToWarrior, defaultPresenter, ec)
+    new WarriorController(controllerComponents, findWarrior, equipNewWeaponToWarrior, presenter, ec)
 
 }
