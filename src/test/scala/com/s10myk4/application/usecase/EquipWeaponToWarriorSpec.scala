@@ -8,13 +8,12 @@ import com.s10myk4.application.usecase.EquipWeaponToWarrior.{
 }
 import com.s10myk4.domain.lifcycle.WarriorRepository
 import com.s10myk4.domain.model.Attribute.{DarkAttribute, LightAttribute}
-import com.s10myk4.domain.model.character.warrior.Warrior.{DifferentAttributeError, NotOverLevelError}
 import com.s10myk4.domain.model.character.warrior.{Warrior, WarriorId, WarriorLevel, WarriorName}
 import com.s10myk4.domain.model.weapon.Weapon.GoldSword
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatest.{DiagrammedAssertions, FlatSpec}
 import org.scalatest.mockito.MockitoSugar
+import org.scalatest.{DiagrammedAssertions, FlatSpec}
 
 class EquipWeaponToWarriorSpec extends FlatSpec with DiagrammedAssertions with MockitoSugar {
 
@@ -40,8 +39,7 @@ class EquipWeaponToWarriorSpec extends FlatSpec with DiagrammedAssertions with M
     }).get
 
     assert(
-      useCase.exec(warrior, GoldSword).run(Applicative[Id].pure) ===
-        NotOverLevel(NotOverLevelError(warrior.level, GoldSword))
+      useCase.exec(warrior, GoldSword).run(Applicative[Id].pure) === NotOverLevel
     )
   }
 
@@ -54,8 +52,7 @@ class EquipWeaponToWarriorSpec extends FlatSpec with DiagrammedAssertions with M
     }).get
 
     assert(
-      useCase.exec(warrior, GoldSword).run(Applicative[Id].pure) ===
-        DifferentAttribute(DifferentAttributeError(warrior.attribute, GoldSword))
+      useCase.exec(warrior, GoldSword).run(Applicative[Id].pure) === DifferentAttribute
     )
   }
 
@@ -69,15 +66,12 @@ class EquipWeaponToWarriorSpec extends FlatSpec with DiagrammedAssertions with M
 
     assert(
       useCase.exec(warrior, GoldSword).run(Applicative[Id].pure) ===
-        DifferentAttributeAndNotOverLevel(
-          DifferentAttributeError(warrior.attribute, GoldSword),
-          NotOverLevelError(warrior.level, GoldSword)
-        )
+        DifferentAttributeAndNotOverLevel
     )
   }
 
   private val repository: WarriorRepository[Id] = mock[WarriorRepository[Id]]
-  when(repository.store(any[Warrior])).thenReturn(())
+  when(repository.update(any[Warrior])).thenReturn(())
 
   private val useCase = new EquipWeaponToWarrior[Id](repository)
 
