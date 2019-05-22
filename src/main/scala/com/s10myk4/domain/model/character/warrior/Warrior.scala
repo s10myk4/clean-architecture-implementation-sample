@@ -2,8 +2,8 @@ package com.s10myk4.domain.model.character.warrior
 
 import cats.data.ValidatedNel
 import cats.implicits._
+import com.s10myk4.domain.model.Attribute
 import com.s10myk4.domain.model.weapon.Weapon
-import com.s10myk4.domain.model.{Attribute, BaseEntity}
 
 sealed abstract case class Warrior(
     id: WarriorId,
@@ -11,7 +11,7 @@ sealed abstract case class Warrior(
     attribute: Attribute,
     weapon: Option[Weapon],
     level: WarriorLevel
-) extends BaseEntity[WarriorId] {
+) extends {
 
   import Warrior._
 
