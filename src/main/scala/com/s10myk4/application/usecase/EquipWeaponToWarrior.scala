@@ -13,9 +13,6 @@ import com.s10myk4.domain.model.weapon.Weapon
 
 import scala.language.higherKinds
 
-/**
-  * 戦士に新しい武器を装備する
-  */
 final class EquipWeaponToWarrior[F[_]: Monad](
     repository: WarriorRepository[F]
 ) {
@@ -25,7 +22,7 @@ final class EquipWeaponToWarrior[F[_]: Monad](
   def exec(warrior: Warrior, newWeapon: Weapon): UseCaseCont[F, UseCaseResult] =
     UseCaseCont { f =>
       warrior.equip(newWeapon) match {
-        case Valid(w)     => repository.store(w).flatMap(_ => f(NormalCase))
+        case Valid(w)     => repository.update(w).flatMap(_ => f(NormalCase))
         case Invalid(err) => Monad[F].point(err)
       }
     }
@@ -37,26 +34,26 @@ object EquipWeaponToWarrior {
       weapon: Weapon
   )
 
-  implicit def toUseCaseResult(domainErrors: NonEmptyList[WarriorError]): UseCaseResult =
-    domainErrors match {
-      case NonEmptyList(h: DifferentAttributeError, t) if t.isEmpty => DifferentAttribute(h)
-      case NonEmptyList(h: NotOverLevelError, t) if t.isEmpty       => NotOverLevel(h)
-      //case _                                                        => DifferentAttributeAndNotOverLevel()
+  private implicit def toUseCaseResult(domainErrors: NonEmptyList[WarriorError]): UseCaseResult = {
+    val errors = domainErrors.toList.toSet
+    errors match {
+      case _ if errors == Set(DifferentAttributeError, NotOverLevelError) => DifferentAttributeAndNotOverLevel
+      case _ if errors == Set(DifferentAttributeError)                    => DifferentAttribute
+      case _ if errors == Set(NotOverLevelError)                          => NotOverLevel
+      case _                                                              => NotConsideredDomainError
     }
-
-  final case class DifferentAttributeAndNotOverLevel(err1: DifferentAttributeError, err2: NotOverLevelError)
-      extends AbnormalCase {
-    val cause: String = s"${DifferentAttribute(err1).cause} and ${NotOverLevel(err2).cause}"
   }
 
-  final case class DifferentAttribute(err: DifferentAttributeError) extends AbnormalCase {
-    val cause: String =
-      s"Weapon attribute:${err.weapon.attribute.entryName} is different warrior attribute:${err.warriorAttr.entryName}"
+  object DifferentAttributeAndNotOverLevel extends AbnormalCase {
+    val cause: String = s"${DifferentAttribute.cause} and ${NotOverLevel.cause}"
   }
 
-  final case class NotOverLevel(err: NotOverLevelError) extends AbnormalCase {
-    val cause: String =
-      s"Warrior level:${err.warriorLevel.value} is not over weapon level:${err.weapon.levelConditionOfEquipment}"
+  object DifferentAttribute extends AbnormalCase {
+    val cause: String = s"Weapon attribute is different warrior attribute"
+  }
+
+  object NotOverLevel extends AbnormalCase {
+    val cause: String = s"Warrior level is not over weapon level"
   }
 
 }
