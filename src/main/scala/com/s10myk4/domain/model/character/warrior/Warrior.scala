@@ -1,11 +1,9 @@
 package com.s10myk4.domain.model.character.warrior
 
 import cats.data.ValidatedNel
-import com.s10myk4.domain.model.character.warrior.Warrior.{DifferentAttributeError, NotOverLevelError}
+import cats.implicits._
 import com.s10myk4.domain.model.weapon.Weapon
 import com.s10myk4.domain.model.{Attribute, BaseEntity}
-
-import cats.syntax.validated._
 
 sealed abstract case class Warrior(
     id: WarriorId,
@@ -15,15 +13,18 @@ sealed abstract case class Warrior(
     level: WarriorLevel
 ) extends BaseEntity[WarriorId] {
 
+  import Warrior._
+
   def equip(weapon: Weapon): ValidatedNel[WarriorError, Warrior] = {
-    if (!isSameAttribute(weapon)) DifferentAttributeError(attribute, weapon).invalidNel
-    else if (!isOverLevel(weapon)) NotOverLevelError(level, weapon).invalidNel
-    else new Warrior(id, name, attribute, Some(weapon), level) {}.validNel
+    (isNotSameAttribute(weapon), isNotOverLevel(weapon))
+      .mapN((_, _) => new Warrior(id, name, attribute, Some(weapon), level) {})
   }
 
-  private def isSameAttribute(weapon: Weapon): Boolean = attribute == weapon.attribute
+  private def isNotSameAttribute(weapon: Weapon): ValidatedNel[WarriorError, Weapon] =
+    if (attribute == weapon.attribute) weapon.validNel else DifferentAttributeError.invalidNel
 
-  private def isOverLevel(weapon: Weapon): Boolean = level.value >= weapon.levelConditionOfEquipment
+  private def isNotOverLevel(weapon: Weapon): ValidatedNel[WarriorError, Weapon] =
+    if (level.value >= weapon.levelConditionOfEquipment) weapon.validNel else NotOverLevelError.invalidNel
 
 }
 
@@ -35,9 +36,7 @@ object Warrior {
       level: WarriorLevel
   ): Warrior = new Warrior(id, name, attribute, None, level) {}
 
-  def createDefault(id: WarriorId): ValidatedNel[WarriorError, Warrior] = ???
+  object DifferentAttributeError extends WarriorError
 
-  final case class DifferentAttributeError(warriorAttr: Attribute, weapon: Weapon) extends WarriorError
-
-  final case class NotOverLevelError(warriorLevel: WarriorLevel, weapon: Weapon) extends WarriorError
+  object NotOverLevelError extends WarriorError
 }
