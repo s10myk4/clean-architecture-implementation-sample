@@ -1,6 +1,7 @@
 package com.s10myk4.application.support
 
 import cats.data.ContT
+import cats.effect.IO
 import com.s10myk4.application.cont.UseCaseCont
 import com.s10myk4.application.usecase.UseCaseResult
 
@@ -13,7 +14,9 @@ object UseCaseCont {
 
   def point[F[_], A](a: => A): UseCaseCont[F, A] = ContT(f => f(a))
 
-  //def liftM[M[_] : Monad, A](ma: M[A]): ActionCont[M, A] = ContT(f => Monad[M].point(ma)(f))
+  //def liftM[M[_]: Monad, A](ma: M[A])(implicit mi: Monad[A]): UseCaseCont[M, A] = ContT(f => Monad[M].point(ma)(f))
+
+  def fromIO[A](io: IO[A]): UseCaseCont[IO, A] = ContT(io.flatMap)
 
   def fromFuture[A](future: Future[A])(implicit ec: ExecutionContext): UseCaseCont[Future, A] =
     ContT(future.flatMap(_))

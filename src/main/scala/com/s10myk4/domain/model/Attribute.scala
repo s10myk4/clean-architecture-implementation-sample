@@ -1,19 +1,16 @@
 package com.s10myk4.domain.model
 
-sealed trait Attribute
+import enumeratum._
 
-object Attribute {
+sealed trait Attribute extends EnumEntry
+
+object Attribute extends Enum[Attribute] {
+
   case object LightAttribute  extends Attribute
   case object DarkAttribute   extends Attribute
   case object WaterAttribute  extends Attribute
   case object FireAttribute   extends Attribute
   case object NormalAttribute extends Attribute
 
-  val attributes = Seq(
-    LightAttribute,
-    DarkAttribute,
-    WaterAttribute,
-    FireAttribute,
-    NormalAttribute
-  )
+  val values = findValues
 }

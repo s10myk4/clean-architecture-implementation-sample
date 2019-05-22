@@ -16,8 +16,8 @@ sealed abstract case class Warrior(
 ) extends BaseEntity[WarriorId] {
 
   def equip(weapon: Weapon): ValidatedNel[WarriorError, Warrior] = {
-    if (!isSameAttribute(weapon)) new DifferentAttributeError().invalidNel
-    else if (!isOverLevel(weapon)) new NotOverLevelError().invalidNel
+    if (!isSameAttribute(weapon)) DifferentAttributeError(attribute, weapon).invalidNel
+    else if (!isOverLevel(weapon)) NotOverLevelError(level, weapon).invalidNel
     else new Warrior(id, name, attribute, Some(weapon), level) {}.validNel
   }
 
@@ -33,23 +33,11 @@ object Warrior {
       name: WarriorName,
       attribute: Attribute,
       level: WarriorLevel
-  ): Warrior = {
-    new Warrior(id, name, attribute, None, level) {}
-  }
-
-  /*
-  def createDefault(id: WarriorId): ValidationNel[WarriorError, Warrior] = {
-    (WarriorName("default" + id.value) |@| WarriorLevel(1)) {
-      (name, level) =>
-        new Warrior(id, name, Attribute.NormalAttribute, None, level){}
-    }
-  }
-   */
+  ): Warrior = new Warrior(id, name, attribute, None, level) {}
 
   def createDefault(id: WarriorId): ValidatedNel[WarriorError, Warrior] = ???
 
-  final class DifferentAttributeError extends WarriorError
+  final case class DifferentAttributeError(warriorAttr: Attribute, weapon: Weapon) extends WarriorError
 
-  final class NotOverLevelError extends WarriorError
-
+  final case class NotOverLevelError(warriorLevel: WarriorLevel, weapon: Weapon) extends WarriorError
 }

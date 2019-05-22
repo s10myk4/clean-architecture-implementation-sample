@@ -17,7 +17,7 @@ final class FindWarrior[F[_]: Monad](
     repository: WarriorRepository[F]
 ) {
 
-  def apply(id: WarriorId): UseCaseCont[F, Warrior] = UseCaseCont { f =>
+  def exec(id: WarriorId): UseCaseCont[F, Warrior] = UseCaseCont { f =>
     repository.resolveBy(id).flatMap {
       case Some(w) => f(w)
       case None    => Monad[F].point(WarriorNotFound)
