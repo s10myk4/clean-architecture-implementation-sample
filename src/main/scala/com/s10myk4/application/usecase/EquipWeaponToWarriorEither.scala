@@ -1,6 +1,7 @@
 package com.s10myk4.application.usecase
 
 import cats.Monad
+import cats.data.EitherT
 import cats.data.Validated.{Invalid, Valid}
 import cats.syntax.functor._
 import com.s10myk4.domain.lifcycle.WarriorRepository
@@ -19,6 +20,15 @@ final class EquipWeaponToWarriorEither[F[_]: Monad](
     warrior.equip(newWeapon) match {
       case Valid(w)     => repository.update(w).map(_ => Right(NormalCase))
       case Invalid(err) => Monad[F].point(Left(err))
+    }
+  }
+
+  def hoge(warrior: Warrior, newWeapon: Weapon): EitherT[F, AbnormalCase, NormalCase.type] = {
+    warrior.equip(newWeapon) match {
+      case Valid(w) =>
+        EitherT.right[AbnormalCase](repository.update(w).map(_ => NormalCase))
+      case Invalid(err) =>
+        EitherT.left[NormalCase.type](Monad[F].pure(toUseCaseResult(err)))
     }
   }
 
